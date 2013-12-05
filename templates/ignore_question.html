@@ -1,0 +1,26 @@
+<div>
+<script>
+var count =2
+var redirect="/reload-lession/{{ current_lession }}"
+
+function countDown(){
+    if (count <=0){
+        $(document).ready(function() {
+            $(".right-main").load(redirect)
+        })
+    }else{
+  count--;
+  setTimeout("countDown()", 1000)
+ }
+}
+</script>
+
+<center>
+    <h2>Bỏ qua câu hỏi</h2>
+    <span id="timer">
+    <script>
+     countDown();
+    </script>
+    </span>
+</center>
+    </div>

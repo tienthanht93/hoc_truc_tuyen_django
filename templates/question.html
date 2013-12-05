@@ -1,0 +1,37 @@
+<script>
+
+    function formSubmit()
+    {
+        document.getElementById("check_answer").submit();
+    }
+
+    $(document).ready(function(){
+        $('#bo_qua').click(function() {
+            $(".right-main").hide().load("/ignore-question").fadeIn("slow")
+        });
+        $('#nop_bai').click(function(){
+            $.post('/check-answer',{dap_an:$('#radio_check').val()},function(data){
+                $('#main').html(data)
+            });
+        });
+    });
+
+</script>
+<div class="right-main" id="main">
+    <form id="check_answer" action="/check-answer" method="post"> {% csrf_token %}
+        <h2>Trả lời câu hỏi sau bằng cách chọn đáp án đúng nhất</h2>
+        <span class="question">
+            <h3>{{ cau_hoi }}</h3>
+            <div>
+                {% for dap_an in danh_sach_dap_an %}
+                    <label id="questionglabel_0" class="answer">
+                        <input id="radio_check" type="radio" name="dap_an" style="height: 40px;" value={{dap_an.id_answer}} checked="checked"> <div class="answer-content">{{ dap_an.content }}</div>
+                    </label>
+                {% endfor %}
+            </div>
+        </span>
+    <input id="nop_bai" class="btn btn-mini btn-primary" style="float: left;" type="button" value="Nộp bài" >
+    <input id="bo_qua" class="btn btn-warning" style="margin: 0 0 0 7px; float: right;" type="button" value="Bỏ qua" >
+    </form>
+
+</div>

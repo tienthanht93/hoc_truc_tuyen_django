@@ -1,0 +1,42 @@
+ 	<script type="text/javascript" src="/static/plugin/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+	    var i = 1;
+		$(document).click(function(e) {
+			if(e.target.id== 'abc') {
+				i++;
+				$("#answerBox").append('<div class="answerBox"><textarea class="add_answer" name="answer_'+i+'"></textarea><label class = "is_as"><input name="is_answer" type="radio" value="'+i+'" /> là đáp án đúng</label></div>');
+			}
+		});
+
+    </script>
+    <form action="/create-question" method="post" class="add-question"> {% csrf_token %}<br/>
+    
+        <h2>Nhập câu hỏi mới</h2>
+        <textarea class="content" name="content" cols="50" rows="8" maxlength="2000" placeholder="Nội dung câu hỏi" title="Câu hỏi"></textarea>
+        
+        <h2>Viết câu trả lời</h2>
+        <div id="answerBox">
+        	<div class="answerBox">
+                <textarea class="add_answer" name="answer_1"></textarea>
+                <label class = "is_as">
+                	<input name="is_answer" type="radio" value="1" /> là đáp án đúng
+                </label>
+             </div>
+        </div>
+        
+        <div class="add-button">
+        	<a class="btn btn-primary" id="abc" title="Thêm câu trả lời">+</a> Thêm câu trả lời
+            <select name="lession" class="level">
+            	<option value="1">Lesson 1</option>
+                <option value="2">Lesson 2</option>
+                <option value="3">Lesson 3</option>
+                <option value="4">Lesson 4</option>
+                <option value="5">Lession 5</option>
+                <option value="6">Lession 6</option>
+            </select>
+       	</div>
+       
+        <div class="submit">
+        	<input type="submit" name="create" class="btn btn-primary" value="lưu lại câu hỏi"/>
+        </div>
+    </form>

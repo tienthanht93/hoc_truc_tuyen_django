@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chỉnh sửa thông tin</title>
+</head>
+<body>
+    <form action="/doimatkhau" method="post"> {% csrf_token %}
+        <label>mật khẩu mới</label>
+        <input type="password" name="password1" placeholder="Password">
+        <label>nhập lại mật khẩu</label>
+        <input type="password" name="password2" placeholder="Password confirmation">
+        <input type="submit" name="submit" value="Gửi">
+    </form>
+</body>
+</html>

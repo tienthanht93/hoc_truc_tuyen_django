@@ -1,0 +1,70 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Register</title>
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+  <form class="form-horizontal" id="registration" method='post' action='/account/register/'>{% csrf_token %}
+    <fieldset>
+      <legend>Mời bạn nhập các thông tin cần thiết để đăng ký tài khoản</legend>
+      <div class="control-group">
+        <label class="control-label">Username:</label>
+        <div class="controls">
+          {{ user_form.username }}
+            {{ user_form.username.help_text }}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Password:</label>
+        <div class="controls">
+          {{ user_form.password1 }}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Confirm Password:</label>
+        <div class="controls">
+          {{ user_form.password2 }}
+            {{ user_form.password2.help_text }}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+         {{ user_form.email }}
+        </div>
+      </div>
+        <div class="control-group">
+        <label class="control-label">Tên</label>
+        <div class="controls">
+         {{ profile_form.name }}
+        </div>
+      </div>
+         <div class="control-group">
+        <label class="control-label">Giới tính</label>
+        <div class="controls">
+         {{ profile_form.sex }}
+        </div>
+      </div>
+         <div class="control-group">
+        <label class="control-label">Ngày sinh</label>
+        <div class="controls">
+         {{ profile_form.birthday }}
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label"></label>
+        <div class="controls">
+          <button type="submit" class="btn btn-success" >Submit</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+</body>
+</html>

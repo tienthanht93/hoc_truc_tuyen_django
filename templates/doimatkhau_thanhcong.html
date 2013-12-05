@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Success</title>
+    <style>
+        body {
+              padding-top: 40px;
+              padding-bottom: 40px;
+              background-color: #eee;
+            }
+    </style>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+<script language="JavaScript" type="text/javascript">
+var count =4
+var redirect="/"
+
+function countDown(){
+ if (count <=0){
+  window.location = redirect;
+ }else{
+  count--;
+  document.getElementById("timer").innerHTML = " Tự động chuyển về trang chủ trong "+count+" seconds."
+  setTimeout("countDown()", 1000)
+ }
+}
+</script>
+
+<center>
+    <h2>Đổi mật khẩu thành công</h2>
+    <span id="timer">
+    <script>
+     countDown();
+    </script>
+    </span>
+    <h3>hoặc nhấp vào <a href="/">đây</a></h3>
+</center>
+</body>
+</html>

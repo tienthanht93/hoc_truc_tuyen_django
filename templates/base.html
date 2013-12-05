@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Website trắc nghiệm trực tuyến</title>
+<link rel="shortcut icon" href="image/icon/uet.png" type="image/x-icon" />
+<meta name="description" content="Website trắc nghiệm trực tuyến" />
+<meta name="keywords" content="Website trắc nghiệm trực tuyến" />
+
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jq1.6.1.js"></script>
+<script src="/static/js/bootstrap-dialog.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('a.login-window').click(function() {
+
+		// Getting the variable's value from a link
+		var loginBox = $(this).attr('href');
+
+		//Fade in the Popup and add close button
+		$(loginBox).fadeIn(300);
+
+		//Set the center alignment padding + border
+		var popMargTop = ($(loginBox).height() + 24) / 2;
+		var popMargLeft = ($(loginBox).width() + 24) / 2;
+
+		$(loginBox).css({
+			'margin-top' : -popMargTop,
+			'margin-left' : -popMargLeft
+		});
+
+		// Add the mask to body
+		$('body').append('<div id="mask"></div>');
+		$('#mask').fadeIn(300);
+
+		return false;
+	});
+
+	// When clicking on the button close or the mask layer the popup closed
+	$('a.close, #mask').live('click', function() {
+	  $('#mask , .login-popup').fadeOut(300 , function() {
+		$('#mask').remove();
+	});
+	return false;
+	});
+});
+</script>
+
+</head>
+<body>
+	<div class="header">
+    <div class="header-center">
+    	<div class="logo"></div>
+        <div class="header-banner">
+            <h1>Trắc Nghiệm Trực Tuyến</h1>
+        <form class="form-search">
+          <div class="input-append">
+            <input name="key" class="search-type" type="text" placeholder="Tìm câu hỏi ..">
+            <button name="search" type="submit" class="btn">Tìm kiếm</button>
+          </div>
+        </form>
+        </div>
+
+    </div>
+    <script>
+function alertFuncBase()
+{
+    alert('Bạn chưa đăng nhập');
+}
+</script>
+    <div class="top-menu">
+        <div class="top-center-menu">
+        	<a href="/"><div class="menu-item" >Trang chủ</div></a>
+            {% if user.is_authenticated %}
+                <a href="/statistic"><div class="menu-item">Thống kê</div></a>
+                <a href="/profile"><div class="menu-item">Hồ sơ</div></a>
+            {% else %}
+                <a href="/"><div class="menu-item" onclick="alertFuncBase()">Thống kê</div></a>
+                <a href="/"><div class="menu-item" onclick="alertFuncBase()">Hồ sơ</div></a>
+            {% endif %}
+            {% include login %}
+          
+
+        </div>
+    </div>
+    </div>
+    </div>
+<div class="page">
+    <div class="main">
+        {% include page %}
+        <div style="clear:both;" >&nbsp;</div>
+    </div>
+</div>
+<div class="footer">
+    <div class="footer-bottom"><div class="footer-bottom-center">
+    	<span> &nbsp; &copy; 2013 Copyright <a href="./">UET - Team </a>. All right reserved</span>
+        <div class="bottom-bar-menu" style="text-align:right;">
+            University of Engineering and Technology &nbsp;<br/>
+            Ha Noi , Viet Nam &nbsp;
+        </div>
+    </div></div>
+</div>
+</body>
+</html>

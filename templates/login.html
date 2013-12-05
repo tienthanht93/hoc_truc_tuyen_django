@@ -1,0 +1,15 @@
+<a href="/account/register"><button class="btn btn-primary" style="margin: 0 0 0 7px; float: right;">Đăng ký</button></a>
+<a href="#login-box" class="login-window"><button class="btn btn-primary" style="float: right;">Đăng nhập</button></a>
+<div id="login-box" class="login-popup">
+<a href="#" class="close"><img src="/static/image/icon/del.png" class="btn_close" title="Close Window" alt="Close" /></a>
+<form action=/account/auth class="form-signin" method="post">{% csrf_token %}
+<h2 class="form-signin-heading" style="font-size:20px;">Đăng nhập hệ thống</h2>
+<input name="email" type="text" class="input-block-level" placeholder="Email">
+<input name="password" type="password" class="input-block-level" placeholder="Mật khẩu">
+<label class="checkbox">
+<input type="checkbox" value="remember-me"> Ghi nhớ tôi đăng nhập lần sau
+</label>
+<button class="btn btn-large btn-primary" type="submit">Đăng nhập</button>
+<a>Tôi đã quên mật khẩu !!!</a>
+</form>
+</div>

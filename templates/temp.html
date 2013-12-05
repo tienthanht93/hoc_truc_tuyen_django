@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>học trực tuyến</title>
+</head>
+<body>
+    <h2>Câu hỏi bạn đã đăng</h2>
+    <p>{{ cau_hoi }}</p>
+    {% for anwser in cau_tra_loi %}
+        <p>{{ anwser }}</p>
+    {% endfor %}
+    <br>
+    <h3>Đáp án đúng:</h3><br>
+    {{ dap_an }}
+</body>
+</html>

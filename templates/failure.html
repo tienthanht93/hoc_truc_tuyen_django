@@ -1,0 +1,30 @@
+<div>
+    <script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jq1.6.1.js"></script>
+<script src="/static/js/bootstrap-dialog.js"></script>
+<script type="text/javascript"></script>
+<script type="text/javascript">
+var count =2
+var redirect="/reload-lession/{{ current_lession }}"
+
+function countDown(){
+    if (count <=0){
+        $(document).ready(function() {
+            $(".right-main").load(redirect)
+        })
+    }else{
+  count--;
+  setTimeout("countDown()", 1000)
+ }
+}
+</script>
+
+<center>
+    <h2>Đáp án không chính xác</h2>
+    <span id="timer">
+    <script type="text/javascript">
+     countDown();
+    </script>
+    </span>
+</center>
+    </div>

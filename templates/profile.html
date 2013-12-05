@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Website trắc nghiệm trực tuyến</title>
+    <link rel="shortcut icon" href="image/icon/uet.png" type="image/x-icon" />
+    <meta name="description" content="Website trắc nghiệm trực tuyến" />
+    <meta name="keywords" content="Website trắc nghiệm trực tuyến" />
+    <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="header">
+    <div class="header-center">
+    	<div class="logo"></div>
+        <div class="header-banner">
+            <h1>Trắc Nghiệm Trực Tuyến</h1>
+        </div>
+    </div>
+    </div>
+    <div class="top-menu">
+        <div class="top-center-menu">
+            <a href="/"><div class="menu-item" >Trang chủ</div></a>
+            <a href="/statistic"><div class="menu-item">Thống kê</div></a>
+            <a href="/profile"><div class="menu-item">Hồ sơ</div></a>
+            {% include login %}
+         </div>
+    </div>
+    <div class="page">
+    <div class="main_statistic">
+    <h2>Thông tin tài khoản</h2>
+    <table class="table table-responsive">
+        <tr>
+            <td>Tài khoản</td>
+            <td>Địa chỉ Email</td>
+            <td>Tên</td>
+            <td>Giới tính</td>
+            <td>Ngày sinh</td>
+        </tr>
+        <tr>
+            <td>{{user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ profile.name }}</td>
+            <td>{{ profile.sex }}</td>
+            <td>{{ profile.birthday }}</td>
+
+        </tr>
+    </table>
+    </div>
+    </div>
+<div class="footer">
+    <div class="footer-bottom"><div class="footer-bottom-center">
+    	<span> &nbsp; &copy; 2013 Copyright <a href="./">UET - Team </a>. All right reserved</span>
+        <div class="bottom-bar-menu" style="text-align:right;">
+            University of Engineering and Technology &nbsp;<br/>
+            Ha Noi , Viet Nam &nbsp;
+        </div>
+    </div></div>
+</div>
+</body>
+</html>

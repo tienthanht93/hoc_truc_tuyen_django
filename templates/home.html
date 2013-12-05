@@ -1,0 +1,29 @@
+<div class="left-menu">
+            <label >Chọn mức câu hỏi</label>
+            {% if user.is_authenticated %}
+                <a href="/lession/1"><li item-id="18" class="top mn-item">Level 1    </li></a>
+                <a href="/lession/2"><li item-id="18" class="top mn-item">Level 2   </li></a>
+                <a href="/lession/3"><li item-id="18" class="top mn-item">Level 3    </li></a>
+                <a href="/lession/4"><li item-id="18" class="top mn-item">Level 4    </li></a>
+                <a href="/lession/5"><li item-id="18" class="top mn-item">Level 5   </li></a>
+                <a href="/lession/6"><li item-id="18" class="top mn-item">Level 6   </li></a>
+            {% else%}
+                <a href="./"><li item-id="18" class="top mn-item" onclick="alertFunc()">Level 1    </li></a>
+                <a href="./"><li item-id="18" class="top mn-item" onclick="alertFunc()">Level 2   </li></a>
+                <a href="./"><li item-id="18" class="top mn-item" onclick="alertFunc()">Level 3    </li></a>
+                <a href="./"><li item-id="18" class="top mn-item" onclick="alertFunc()">Level 4    </li></a>
+                <a href="./"><li item-id="18" class="top mn-item" onclick="alertFunc()">Level 5   </li></a>
+                <a href="./"><li item-id="18" class="top mn-item" onclick="alertFunc()">Level 6   </li></a>
+            {% endif %}
+
+</div>
+<script>
+    function alertFunc()
+    {
+        alert('Bạn cần phải đăng nhập \nđể xem được nội dung!');
+    }
+
+</script>
+{% block right-main %}
+       {% include right_main %}
+{% endblock %}

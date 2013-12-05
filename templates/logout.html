@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>Đăng xuất</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
+<script language="JavaScript" type="text/javascript">
+var count =4
+var redirect="/"
+
+function countDown(){
+ if (count <=0){
+  window.location = redirect;
+ }else{
+  count--;
+  document.getElementById("timer").innerHTML = " Trang web sẽ tự chuyển hướng trong "+count+" seconds."
+  setTimeout("countDown()", 1000)
+ }
+}
+</script>
+
+<center>
+    <h2>Đăng xuất thành công!</h2>
+    <span id="timer">
+    <script>
+     countDown();
+    </script>
+    </span>
+</center>
+</html>

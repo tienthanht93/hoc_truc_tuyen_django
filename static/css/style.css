@@ -1,0 +1,131 @@
+/**********CSS Document**********
+ *								*
+ *   Author : Trung Chocopie    *
+ *   Edited : 08/11/2013         *
+ *                              *
+ ********************************/
+
+@charset "utf-8";
+body{width:100%;margin:auto;background: url(../image/icon/bg.jpg) ;}
+a:link{color:inherit;text-decoration:none;}a:visited{color:inherit;}
+img {border:none; border-color:#FFF;}textarea:focus, input:focus{ outline: 0;}
+button{border:2px solid #999;}
+
+
+/**************CSS for header****************/
+.header{width:100%;float:left;margin:0 0 0 0; background: #449d44;}
+.header-center{width:960px;margin:0 auto; height: 70px;}
+.logo{float:left;height:70px; margin-top:-15px;width:200px;background: url(../image/icon/django.png) no-repeat;background-size:90%;}
+.form-search{float: right; margin:-40px 0 0 300px;}
+.input-append{background: #FFF; padding: 0 0 0 5px;  border-radius: 5px;}
+.search-type{border: none; margin: 6px 0 0 0; padding: 2px 0 0 0;}
+.top-menu{float: left;width:100%; background:#002944; padding: 5px 0 5px 0;}
+.menu-item{font-size:16px;float:left;padding: 5px 20px 0 20px;font-weight:550; height: 30px;cursor:pointer; color: #FFF;border-style: solid;border-width: 0 1px; margin: 2px 0 0 0;border-left-color: #091d2b;
+border-right-color: #2a5069;background-position: 0 0;-webkit-transition: background-position 0.3s ease-out 0s;transition: background-position 0.3s ease-out 0s;font-weight: bold;}
+.menu-item:hover{opacity: 0.8;}
+.top-center-menu{width: 960px; margin:0 auto;}
+
+.form-signin {
+        max-width: 350px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+          font-size: 13px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+        width: 250px;
+      }
+
+
+
+
+
+#mask {
+	display: none;
+	background: #000;
+	position: fixed; left: 0; top: 0;
+	z-index: 10;
+	width: 100%; height: 100%;
+	opacity: 0.8;
+	z-index: 999;
+}
+
+.login-popup{
+	display:none;
+	float: left;
+	font-size: 1.2em;
+	position: fixed;
+	top: 50%; left: 50%;
+	z-index: 99999;
+	border-radius:3px 3px 3px 3px;
+    -moz-border-radius: 3px; /* Firefox */
+    -webkit-border-radius: 3px; /* Safari, Chrome */
+}
+
+img.btn_close {
+	float: right;
+	margin: 0px 0px 0 0;
+}
+
+
+
+
+/********************css for page*********************/
+.page{padding:5px 0 10px 0;float:left;width:100%;min-height: 600px;}
+.main{margin:20px auto;width:960px;min-height: 100px; background: #FFF;}
+.main_statistic{margin:20px auto;width:960px;min-height: 100px;}
+.left-menu{float: left; width: 200px; margin: 30px 0 0 10px;}
+.left-menu> a >li {padding: 8px 0 8px 10px;margin: 0 0 0 0;border-bottom: 1px solid #dcbdff;background: url(../image/icons/direct.png) 0px 0px no-repeat right top #faf4ff;}
+li {line-height: 20px; list-style: none;}
+
+.matrix-finished{float: left; margin: 20px 0 0 20px; padding:10px 0 0 10px; min-height:45px; width: 700px; border: 1px solid #ccc;}
+.matrix-item{ border: 1px solid #ccc;font-family:"Courier New", Courier, monospace; font-size:17px; padding:0 4px 0 4px;}
+.right-main{float: left; margin: 10px 0 0 10px; padding:0 20px 20px 20px;min-height:400px; width: 700px; border: 1px solid #ccc;}
+.question{ width:660px; float:left; margin:0 0 20px 0;}
+.answer{width:660px; min-height:20px; float:left;border-radius: 6px;border: solid 1px #339fe6;}
+.answer input{ float:left; margin-left:5px;}
+.answer:hover{background-color: #c4eefd;background: linear-gradient(to top, #62D5FF 0%,#CDEFFF 100%);}
+.answer:focus{background-color: #c4eefd;background: linear-gradient(to top, #62D5FF 0%,#CDEFFF 100%);}
+input[type=radio]:checked {background: red;}
+.answer-content{ float:left; width:610px; margin:12px 0 0 15px; min-height:20px;}
+/**************CSS for footer****************/
+.footer{padding:5px 0 0 0;width:100%;clear:both;color:#606060;font-family: Trebuchet MS, Arial, Verdana, Geneva, Helvetica, sans-serif;}
+.footer-bottom{padding:7px 0 0 0;height:30px;width:100%; font-family:Segoe UI;}
+.footer-bottom-center{width:100%;margin:0 auto;color:#EDEBEB; background:#036; height:50px; padding:5px 0 0 0;}
+.bottom-bar-menu{float:right;}
+
+
+
+
+
+
+
+/*************************************************/
+.level{float:right; width:100px;}
+
+.add-question{width:900px; margin:20px auto; height:800px;}
+.add-question .content{width:500px; resize:none; padding: 10px 0 0 10px;}
+#answerBox{width:700px; float:left;}
+.answerBox_item{}
+.is_as{float:left; margin:20px 0 0 20px;}
+.add_answer{width:500px; height:70px; float:left; margin:0 0 20px 0;}
+.abc{float:right; clear:both;}
+
+.submit{float:left; width:800px; margin:30px 0 0 0;}
+.add-button{float:left; width:500px;}
