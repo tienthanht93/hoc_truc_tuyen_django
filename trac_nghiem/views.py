@@ -107,6 +107,7 @@ def createQuestion(request):
                 #tạo các bản ghi
                 q = question(content=content,lession=les) #tạo ra bản ghi question
                 q.id_user = request.user
+                q.lastTimeChanged=datetime.datetime.now()
                 q.save()                                    #lưu bản ghi
                 j = 0       #j là biến chạy
                 s = str(1)  #s là biến string để xác định đáp án đúng
@@ -253,7 +254,7 @@ def statistic(request):
 
     if request.user.is_authenticated():
         r = result.objects.filter(id_user=request.user).order_by('lession')
-        return render_to_response('statistic.html',{'result':r,'login':'loggedin.html','user':request.user,})
+        return render_to_response('statistic.html',{'result':r,'login':'loggedin.html','user':request.user})
     else:
         return HttpResponse("Bạn chưa đăng nhập")
 def changePassword(request):
@@ -283,3 +284,11 @@ def profile (request):
         return render_to_response('profile.html',{'profile':p,'login':'loggedin.html','user':request.user})
     else:
         return HttpResponse("bạn chưa đăng nhập")
+def questionList(request):
+    if (request.user.is_authenticated() and request.method=="GET"):
+        q = question.objects.filter(id_user=request.user).order_by('id_question')
+        return render_to_response("questionList.html",{'question':q,'login':'loggedin.html','user':request.user})
+    return HttpResponse("questionList's Function error")
+def editQuestion(request):
+    if (request.user.is_authenticated()):
+        request.GET.get("id_question")

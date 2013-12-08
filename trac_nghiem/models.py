@@ -10,6 +10,7 @@ class question(models.Model):
     id_question = models.AutoField(primary_key=True,auto_created=True,blank=False,verbose_name="Mã câu hỏi")
     content = models.CharField(max_length=2000,blank=False,verbose_name="Nội dung câu hỏi")
     lession  = models.SmallIntegerField(blank=False,verbose_name="mức độ")
+    lastTimeChanged = models.DateTimeField(verbose_name="Lần làm bài cuối cùng",primary_key=False)
     def __unicode__(self):
         return u'%s' %(self.content)
 
