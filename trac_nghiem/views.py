@@ -84,7 +84,6 @@ def createQuestion(request):
     '''ghi cau hoi vao trong co so du lieu'''
 
     #lấy thông tin cần thiết từ form
-    print request.method
     if request.method=="POST":
         content = request.POST.get('content')  #lấy nội dung câu hỏi
         if (content):
@@ -289,6 +288,59 @@ def questionList(request):
         q = question.objects.filter(id_user=request.user).order_by('id_question')
         return render_to_response("questionList.html",{'question':q,'login':'loggedin.html','user':request.user})
     return HttpResponse("questionList's Function error")
-def editQuestion(request):
+def editQuestion(request,id_question):
     if (request.user.is_authenticated()):
-        request.GET.get("id_question")
+        global current_id_question
+        current_id_question = int(id_question)
+        q = question.objects.get(id_question=id_question)
+        a = answer.objects.filter(id_question=q)
+        return render_to_response("edit_question.html",{'question':q,'answer':a,'login':'loggedin.html','user':request.user},RequestContext(request))
+def saveEditedQuestion(request):
+    if(request.user.is_authenticated() and request.method=="POST"):
+        content = request.POST.get('content')  #lấy nội dung câu hỏi
+        if (content):
+            li=[]                                   # biến lưu danh sách các câu trả lời
+            i = 1
+
+            # lấy ra các câu trả lời từ form
+            dap_an = "answer_" + str(i)
+            while (request.POST.get(dap_an)):
+                    i = i + 1
+                    li.append(request.POST.get(dap_an))
+                    dap_an = "answer_" + str(i)
+
+            # lấy ra đáp án đúng và các thông tin khác
+            dap_an_dung = request.POST.get('is_answer')
+            if (dap_an_dung):
+                les = request.POST.get('lession')
+                giai_thich = request.POST.get('giai_thich')
+
+                #lấy bản ghi tương ứng và lưu các thay đổi trên bản ghi này.
+                id_question=int(current_id_question)
+                q = question.objects.get(id_question=id_question) #lấy bản ghi question
+                q.content=content
+                q.lastTimeChanged=datetime.datetime.now()   #thay đổi thời gian
+                q.lession=les                               #thay đổi lession
+                q.save()                                    #lưu bản ghi question
+                #xóa các đáp án cũ.
+                a = answer.objects.filter(id_question=q)
+                a.delete()
+                j = 0       #j là biến chạy
+                s = str(1)  #s là biến string để xác định đáp án đúng
+                while (j < i-1):
+                    if (dap_an_dung == s): # nếu là đáp án đúng thì thực hiện lệnh if
+                        ans = answer(content = li[j], is_answer=True)
+                        ans.id_question = q
+                        ans.save()
+                    else:                   # nếu là đáp án sai thì thực hiện lệnh else
+                        ans = answer(content = li[j], is_answer=False)
+                        ans.id_question = q
+                        ans.save()
+                    j = j + 1
+                    s=str(j+1)
+                return render_to_response('temp.html',{'cau_hoi':content,'dap_an':dap_an_dung,'cau_tra_loi':li})
+            else:
+                return HttpResponse("Câu hỏi không hợp lệ")
+        else:
+            return HttpResponse("Câu hỏi không hợp lệ")
+    return HttpResponse("Câu hỏi không hợp lệ")

@@ -26,7 +26,8 @@ urlpatterns = patterns('',
     url(r'^doimatkhau','trac_nghiem.views.changePassword'),
     url(r'^profile','trac_nghiem.views.profile'),
     url(r'^question-list','trac_nghiem.views.questionList'),
-    url(r'^edit-question','trac_nghiem.views.editQuestion'),
+    url(r'^edit-question/(?P<id_question>\d+)','trac_nghiem.views.editQuestion'),
+    url(r'^save-question','trac_nghiem.views.saveEditedQuestion'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

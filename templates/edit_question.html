@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Website trắc nghiệm trực tuyến</title>
+    <link rel="shortcut icon" href="image/icon/uet.png" type="image/x-icon" />
+    <meta name="description" content="Website trắc nghiệm trực tuyến" />
+    <meta name="keywords" content="Website trắc nghiệm trực tuyến" />
+    <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jq1.6.1.js"></script>
+    <script src="/static/js/bootstrap-dialog.js"></script>
+    <script type="text/javascript"></script>
+</head>
+<body>
+	<div class="header">
+    <div class="header-center">
+    	<div class="logo"></div>
+        <div class="header-banner">
+            <h1>Trắc Nghiệm Trực Tuyến</h1>
+        </div>
+    </div>
+    </div>
+    <div class="top-menu">
+        <div class="top-center-menu">
+            <a href="/"><div class="menu-item" >Trang chủ</div></a>
+            <a href="/statistic"><div class="menu-item">Thống kê</div></a>
+            <a href="/profile"><div class="menu-item">Hồ sơ</div></a>
+            {% include login %}
+         </div>
+    </div>
+    <script type="text/javascript" src="/static/plugin/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+	    var i = {{ answer.count }};
+		$(document).click(function(e) {
+			if(e.target.id== 'abc') {
+				i++;
+				$("#answerBox").append('<div class="answerBox"><textarea class="add_answer" name="answer_'+i+'"></textarea><label class = "is_as"><input name="is_answer" type="radio" value="'+i+'" /> là đáp án đúng</label></div>');
+			}
+		});
+
+    </script>
+    <div class="page">
+    <div class="main_statistic">
+    <form action="/save-question" method="post" class="add-question"> {% csrf_token %}
+
+        <h2>Câu hỏi</h2>
+        <textarea class="content" name="content" cols="50" rows="8" maxlength="2000" title="Câu hỏi">{{ question.content }}</textarea>
+
+        <h2>Câu trả lời</h2>
+        <div id="answerBox">
+        	<div class="answerBox">
+                {% for a in answer %}
+                    <textarea class="add_answer" name="answer_{{ forloop.counter }}">{{ a.content }}</textarea>
+                    <label class = "is_as">
+                        <input name="is_answer" type="radio" {% if a.is_answer == True %}checked="checked" {% endif %}value="1"/> là đáp án đúng
+                    </label>
+                {% endfor %}
+             </div>
+        </div>
+
+        <div class="add-button">
+        	<a class="btn btn-primary" id="abc" title="Thêm câu trả lời">+</a> Thêm câu trả lời
+            <select name="lession" class="level">
+            	<option value="1">Lesson 1</option>
+                <option value="2">Lesson 2</option>
+                <option value="3">Lesson 3</option>
+                <option value="4">Lesson 4</option>
+                <option value="5">Lession 5</option>
+                <option value="6">Lession 6</option>
+            </select>
+       	</div>
+
+        <div class="submit">
+        	<input type="submit" name="create" class="btn btn-primary" value="lưu lại câu hỏi"/>
+        </div>
+    </form>
+
+
+    </div>
+    </div>
+<div class="footer">
+    <div class="footer-bottom"><div class="footer-bottom-center">
+    	<span> &nbsp; &copy; 2013 Copyright <a href="./">UET - Team </a>. All right reserved</span>
+        <div class="bottom-bar-menu" style="text-align:right;">
+            University of Engineering and Technology &nbsp;<br/>
+            Ha Noi , Viet Nam &nbsp;
+        </div>
+    </div></div>
+</div>
+</body>
+</html>
