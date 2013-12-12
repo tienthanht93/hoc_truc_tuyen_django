@@ -139,8 +139,8 @@ def lession(request, lession):
                 return HttpResponse('Phần này chưa có câu hỏi')
             #lấy câu hỏi random phù hợp với lession cho đến khi tìm được câu hỏi phù hợp
             while True:
-                ran = random.randrange(1,so_luong_cau_hoi+1)
-                cau_hoi = question.objects.get(id_question= ran)
+                ran = question.objects.all()
+                cau_hoi = random.choice(ran)
                 if (cau_hoi.lession == int(lession)):
                     if not answered.objects.filter(id_user=request.user,answered=ran):
                         tra_loi = answer.objects.filter(id_question=cau_hoi)
@@ -168,8 +168,8 @@ def reload_lesssion(request, lession):
                 return HttpResponse('Phần này chưa có câu hỏi')
             #lấy câu hỏi random phù hợp với lession cho đến khi tìm được câu hỏi phù hợp
             while True:
-                ran = random.randrange(1,so_luong_cau_hoi+1)
-                cau_hoi = question.objects.get(id_question= ran)
+                ran = question.objects.all()
+                cau_hoi = random.choice(ran)
                 if (cau_hoi.lession == int(lession)):
                     if not answered.objects.filter(id_user=request.user,answered=ran):
                         tra_loi = answer.objects.filter(id_question=cau_hoi)
@@ -257,6 +257,7 @@ def statistic(request):
     else:
         return HttpResponse("Bạn chưa đăng nhập")
 def changePassword(request):
+    """thay đổi mật khẩu cho người dùng"""
     edited = False
     if request.user.is_authenticated():
         if request.method == "POST":
@@ -344,3 +345,14 @@ def saveEditedQuestion(request):
         else:
             return HttpResponse("Câu hỏi không hợp lệ")
     return HttpResponse("Câu hỏi không hợp lệ")
+@csrf_exempt
+def deleteQuestion(request,id_question):
+    id_question = int(id_question)
+    if (question.objects.filter(id_question=id_question)):
+        q = question.objects.get(id_question=id_question)
+        if request.user.is_authenticated() and q.id_user==request.user:
+            q.delete()
+            q = question.objects.filter(id_user=request.user).order_by('id_question')
+            return render_to_response("bang_cau_hoi.html",{'question':q,'login':'loggedin.html','user':request.user})
+    else:
+        return HttpResponse("Không thể xóa!<br>vui lòng thử lại sau.")

@@ -8,6 +8,9 @@
     <meta name="keywords" content="Website trắc nghiệm trực tuyến" />
     <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jq1.6.1.js"></script>
+    <script src="/static/js/bootstrap-dialog.js"></script>
 </head>
 <body>
 	<div class="header">
@@ -26,24 +29,47 @@
             {% include login %}
          </div>
     </div>
+
     <div class="page">
     <div class="main_statistic">
     <h2>Thông tin tài khoản</h2>
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="bang">
+        <colgroup>
+            <col width="10%">
+            <col width="10%">
+            <col width="40%">
+            <col width="30%">
+            <col width="10%">
+        </colgroup>
         <tr>
-            <td>Mã câu hỏi</td>
-            <td>Bài học</td>
-            <td>Nội dung câu hỏi</td>
-            <td>Ngày sửa cuối cùng</td>
-            <td>Edit</td>
+            <th>Mã câu hỏi</th>
+            <th>Bài học</th>
+            <th>Nội dung câu hỏi</th>
+            <th>Ngày sửa cuối cùng</th>
+            <th>Edit</th>
         </tr>
-        {% for q in question %}
+        {% for q in question%}
+            <script>
+                $(document).ready(function(){
+                    $('#thay_doi_{{ forloop.counter }}').click(function(){
+                        window.location.href='/edit-question/{{ q.id_question}}'
+
+                    });
+                    $('#xoa_{{ forloop.counter }}').click(function(){
+                        $.post('/delete-question/{{ q.id_question }}',{id_question:$("#xoa_{{ forloop.counter }}").val()},function(data){
+                            $('#bang').html(data)
+                        });
+                    });
+                });
+            </script>
         <tr>
             <td>{{ q.id_question}}</td>
             <td>{{ q.lession }}</td>
-            <td>{{ q.content }}</td>
+            <td>{{ q.content|slice:":135" }}</td>
             <td>{{ q.lastTimeChanged }}</td>
-            <td><a href="/edit-question/{{ q.id_question }}"><b>Thay đổi</b></a></td>
+            <td><input type="button" class="btn-group-bt" value="Thay Đổi" id="thay_doi_{{ forloop.counter }}">
+                <input type="button" class="btn-group-bt" value="Xóa" id="xoa_{{ forloop.counter }}">
+            </td>
         </tr>
         {% endfor %}
     </table>

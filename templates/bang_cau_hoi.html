@@ -1,0 +1,25 @@
+<table class="table table-responsive" id="bang">
+        <colgroup>
+            <col width="10%">
+            <col width="10%">
+            <col width="40%">
+            <col width="30%">
+            <col width="10%">
+        </colgroup>
+        <tr>
+            <th>Mã câu hỏi</th>
+            <th>Bài học</th>
+            <th>Nội dung câu hỏi</th>
+            <th>Ngày sửa cuối cùng</th>
+            <th>Edit</th>
+        </tr>
+        {% for q in question%}
+        <tr>
+            <td>{{ q.id_question}}</td>
+            <td>{{ q.lession }}</td>
+            <td>{{ q.content|slice:":135" }}</td>
+            <td>{{ q.lastTimeChanged }}</td>
+            <td><a href="/edit-question/{{ q.id_question }}"><b>Thay đổi</b></a><input id="xoa" type="button" value="{{ q.id_question }}"></td>
+        </tr>
+        {% endfor %}
+</table>
