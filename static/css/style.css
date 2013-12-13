@@ -109,8 +109,10 @@ input[type=radio]:checked {background: red;}
 .footer-bottom{padding:7px 0 0 0;height:30px;width:100%; font-family:Segoe UI;}
 .footer-bottom-center{width:100%;margin:0 auto;color:#EDEBEB; background:#036; height:50px; padding:5px 0 0 0;}
 .bottom-bar-menu{float:right;}
-.btn-group-bt{ width:70px; background: none; border:none;}
-.btn-group-bt:hover{ border: 1px solid #05B2D2; background-color: #3e8f3e}
+.btn-group-warning{ width:70px; background: none; border:none;}
+.btn-group-warning:hover{ border: 1px solid #eea236; background-color: #ed9c28}
+.btn-group-dannger{ width:70px; background: none; border:none;}
+.btn-group-dannger:hover{ border: 1px solid #ac2925; background-color: #d2322d}
 
 
 

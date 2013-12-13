@@ -142,7 +142,7 @@ def lession(request, lession):
                 ran = question.objects.all()
                 cau_hoi = random.choice(ran)
                 if (cau_hoi.lession == int(lession)):
-                    if not answered.objects.filter(id_user=request.user,answered=ran):
+                    if not answered.objects.filter(id_user=request.user,answered=cau_hoi.id_question):
                         tra_loi = answer.objects.filter(id_question=cau_hoi)
                         # các biến toàn cục lưu mã câu hỏi và lession hiện tại
                         global current_id_question
@@ -171,7 +171,7 @@ def reload_lesssion(request, lession):
                 ran = question.objects.all()
                 cau_hoi = random.choice(ran)
                 if (cau_hoi.lession == int(lession)):
-                    if not answered.objects.filter(id_user=request.user,answered=ran):
+                    if not answered.objects.filter(id_user=request.user,answered=cau_hoi.id_question):
                         tra_loi = answer.objects.filter(id_question=cau_hoi)
                         # các biến toàn cục lưu mã câu hỏi và lession hiện tại
                         global current_id_question
@@ -189,7 +189,7 @@ def reload_lesssion(request, lession):
 def check_answer(request):
     response = render_to_response("failure.html",{'current_lession':current_lession},RequestContext(request))
     print "in check"
-    print 'dap an %s ' %request.POST
+    print 'dap an %s ' %request.POST.get('dap_an')
     if request.method == "POST":
         if request.POST.get('dap_an'):
             id_answer = request.POST.get('dap_an')
@@ -351,6 +351,9 @@ def deleteQuestion(request,id_question):
     if (question.objects.filter(id_question=id_question)):
         q = question.objects.get(id_question=id_question)
         if request.user.is_authenticated() and q.id_user==request.user:
+            ansed = answered.objects.filter(answered=q.id_question)
+            for a in ansed:
+                a.delete()
             q.delete()
             q = question.objects.filter(id_user=request.user).order_by('id_question')
             return render_to_response("bang_cau_hoi.html",{'question':q,'login':'loggedin.html','user':request.user})

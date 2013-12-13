@@ -4,7 +4,7 @@
             $(".right-main").hide().load("/ignore-question").fadeIn("slow")
         });
         $('#nop_bai').click(function(){
-            $.post('/check-answer',{dap_an:$('#radio_check').val()},function(data){
+            $.post('/check-answer',{dap_an:$('input[name = dap_an]:checked','#check_answer').val()},function(data){
                 $('#main').html(data)
             });
         });
