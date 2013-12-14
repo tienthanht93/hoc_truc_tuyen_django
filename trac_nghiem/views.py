@@ -373,14 +373,15 @@ def createFeedback(request):
     '''ghi phan hoi vao co so du lieu'''
     if request.method == "POST":
         content = request.POST.get("content")
-        print ("nguoi dung %s noi rang: %s" %(user_id, content))
-    if content:
+        #print ("nguoi dung %s noi rang: %s" %(request.user.id, content))
+        if content:
             fb = feedBack(id_user=request.user,feedback=content)
             fb.save()
-            return HttpResponse("Gui phan hoi thanh cong")
+        return HttpResponse("Gui phan hoi thanh cong")
+    else:    
         return HttpResponse("Ban phai dien noi dung vao phan hoi")
-    else:
-        return HttpResponse("Gui phan hoi that bai")
+    
+    return HttpResponse("Gui phan hoi that bai")
 
 def  ranking(request):
     #láy ra tất cả mã của người dùng và kết quả của họ
@@ -399,9 +400,8 @@ def  ranking(request):
             #diem= so cau tra loi dung trong 1 lession * lession (lession cang kho thi trong so cang cao)
             sum = 0
             for r in results:
-            sum = sum + r.scores*r.lession
+                sum = sum + r.scores*r.lession
             #kiem tra xem tên tài khoan da co trong bảng kết quả totalScore chưa
-            print user
             name = user
             if totalScore.objects.filter(user_name=name):
                 #nếu đã có thì update
