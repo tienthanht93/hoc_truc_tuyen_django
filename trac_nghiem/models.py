@@ -55,3 +55,15 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=100,default=None)
     def __unicode__(self):
         return self.user.username
+#bang luu noi dung feedback
+class feedBack(models.Model):
+    id_user = models.ForeignKey(User)
+    feedback = models.CharField(max_length=2000,blank=False,verbose_name="Nội dung phản hồi")
+    def __unicode__(self):
+        return u'%s' %(self.feedback)
+
+#bang luu tong tanh tich cua tung thanh vien dua vao id cua tung nguoi
+class totalScore(models.Model):
+    id_user = models.ForeignKey(User)
+    user_name = models.CharField(verbose_name="tên tài khoản",default="",max_length=200)
+    total_score = models.IntegerField(verbose_name="tổng số điểm của người chơi",default=0)

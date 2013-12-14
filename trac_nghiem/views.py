@@ -8,13 +8,14 @@ from django.core.context_processors import csrf
 from trac_nghiem.models import question
 from trac_nghiem.models import answer
 from trac_nghiem.models import answered
-from trac_nghiem.models import result
-from trac_nghiem.models import UserProfile
+from trac_nghiem.models import result, feedBack
+from trac_nghiem.models import UserProfile, totalScore
 from trac_nghiem.form import UserForm,UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import random
+from django.contrib.auth.models import User
 from django.template import RequestContext
 
 # global variables
@@ -359,3 +360,61 @@ def deleteQuestion(request,id_question):
             return render_to_response("bang_cau_hoi.html",{'question':q,'login':'loggedin.html','user':request.user})
     else:
         return HttpResponse("Không thể xóa!<br>vui lòng thử lại sau.")
+
+def feedback(request):
+    #nếu đã đăng nhập thì cho phép gửi feed back
+    if request.user.is_authenticated():
+        c = {'page':"feedback.html",'login':'loggedin.html'}
+        return render_to_response('base.html',c,context_instance=RequestContext(request))
+    else:
+        return HttpResponse("<html><font size=30>Bạn chưa đăng nhập</html>")
+
+def createFeedback(request):
+    '''ghi phan hoi vao co so du lieu'''
+    if request.method == "POST":
+        content = request.POST.get("content")
+        print ("nguoi dung %s noi rang: %s" %(user_id, content))
+    if content:
+            fb = feedBack(id_user=request.user,feedback=content)
+            fb.save()
+            return HttpResponse("Gui phan hoi thanh cong")
+        return HttpResponse("Ban phai dien noi dung vao phan hoi")
+    else:
+        return HttpResponse("Gui phan hoi that bai")
+
+def  ranking(request):
+    #láy ra tất cả mã của người dùng và kết quả của họ
+    users = User.objects.all()
+    results = result.objects.all()
+
+    for user in users:
+        print "id %s Ten: %s " %(user.id, user)
+    
+    for user in users:
+        #print "id cua nguoi su dung: %s" %user.user_id
+        results = result.objects.filter(id_user = user.id)
+        #nếu như có tồn tại bài làm thì mới tính kết quả
+        if (results):
+            #tinh tong so diem cua 1 nguoi danh duoc dua tren so cau hoi va lession ho vuot qua
+            #diem= so cau tra loi dung trong 1 lession * lession (lession cang kho thi trong so cang cao)
+            sum = 0
+            for r in results:
+            sum = sum + r.scores*r.lession
+            #kiem tra xem tên tài khoan da co trong bảng kết quả totalScore chưa
+            print user
+            name = user
+            if totalScore.objects.filter(user_name=name):
+                #nếu đã có thì update
+                b = totalScore.objects.get(user_name=name)
+                b.total_score = sum
+                b.save()
+            #nếu chưa có thì tạo bản ghi của người đó trong totalScore
+            else: 
+
+                b = totalScore(id_user=user,user_name=name,total_score=sum)
+                b.save()
+                
+    #xếp hạng 10 người chơi có tổng số điểm cao nhất
+    total_score = totalScore.objects.all().order_by('-total_score')[0:10]
+
+    return render_to_response('ranking.html',{'total_score': total_score, 'login':'loggedin.html','user':request.user,})
