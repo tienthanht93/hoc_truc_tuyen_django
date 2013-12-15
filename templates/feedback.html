@@ -1,8 +1,11 @@
  	
-    <form action="/create-feedback" method="post" class="feedback"> {% csrf_token %}<br/>
-    
-        <h2>Nhập nội dung phản hồi của bạn</h2>
-        <textarea class="content" name="content" cols="50" rows="8" maxlength="2000" placeholder="Nội dung phản hồi" title="Phản hồi"></textarea>
+    <form action="/feedback" method="post" class="feedback"> {% csrf_token %}<br/>
+        <fieldset>
+            <label>Tiêu đề:</label>
+            <input type="text" width="50" style="resize: none;">
+        </fieldset>
+        <label>Nội dung: </label>
+        <textarea style="resize: none;" class="content" name="content" cols="50" rows="8" maxlength="2000" placeholder="Nội dung phản hồi" title="Phản hồi"></textarea>
         
         <div class="submit">
         	<input type="submit" name="create" class="btn btn-primary" value="Gửi phản hồi"/>

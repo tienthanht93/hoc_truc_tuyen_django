@@ -26,12 +26,61 @@ def home(request):
         return render_to_response('base.html',{'page':"home.html",'right_main':'right_main_for_home_page.html','login':'loggedin.html','user':request.user},context_instance=RequestContext(request))
     else:
         return render_to_response('base.html',{'page':"home.html",'right_main':'right_main_for_home_page.html','login':'login.html'},context_instance=RequestContext(request))
+
 def add(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated() and 'add_question_flag' not in request.session:
         c = {'page':"create_question.html",'login':'loggedin.html'}
+        request.session['add_question_flag'] = True
         return render_to_response('base.html',c,context_instance=RequestContext(request))
-    else:
-        return HttpResponse("<html><font size=30>Bạn chưa đăng nhập</html>")
+    elif request.user.is_authenticated() and 'add_question_flag' in request.session:
+        '''ghi cau hoi vao trong co so du lieu'''
+        del request.session['add_question_flag']
+        #lấy thông tin cần thiết từ form
+        if request.method=="POST":
+            content = request.POST.get('content')  #lấy nội dung câu hỏi
+            if (content):
+                li=[]                                   # biến lưu danh sách các câu trả lời
+                i = 1
+
+                # lấy ra các câu trả lời từ form
+                dap_an = "answer_" + str(i)
+                while (request.POST.get(dap_an)):
+                        i = i + 1
+                        li.append(request.POST.get(dap_an))
+                        dap_an = "answer_" + str(i)
+
+                # lấy ra đáp án đúng và các thông tin khác
+                dap_an_dung = request.POST.get('is_answer')
+                if (dap_an_dung):
+                    les = request.POST.get('lession')
+                    giai_thich = request.POST.get('giai_thich')
+
+                    #tạo các bản ghi
+                    q = question(content=content,lession=les) #tạo ra bản ghi question
+                    q.id_user = request.user
+                    q.lastTimeChanged=datetime.datetime.now()
+                    q.save()                                    #lưu bản ghi
+                    j = 0       #j là biến chạy
+                    s = str(1)  #s là biến string để xác định đáp án đúng
+                    while (j < i-1):
+                        if (dap_an_dung == s): # nếu là đáp án đúng thì thực hiện lệnh if
+                            ans = answer(content = li[j], is_answer=True)
+                            ans.id_question = q
+                            ans.save()
+                        else:                   # nếu là đáp án sai thì thực hiện lệnh else
+                            ans = answer(content = li[j], is_answer=False)
+                            ans.id_question = q
+                            ans.save()
+                        j = j + 1
+                        s=str(j+1)
+                    return render_to_response('temp.html',{'cau_hoi':content,'dap_an':dap_an_dung,'cau_tra_loi':li})
+                else:
+                    return HttpResponse("Câu hỏi không hợp lệ")
+            else:
+                return HttpResponse("Câu hỏi không hợp lệ")
+        return HttpResponse("Câu hỏi không hợp lệ")
+
+    return HttpResponse("<html><font size=30>Bạn chưa đăng nhập</html>")
 
 def register(request):
     return render_to_response('base.html',{'page':"register.html"})
@@ -81,53 +130,6 @@ def register_user(request):
 def register_success(request):
     return render_to_response('register_success.html')
 
-def createQuestion(request):
-    '''ghi cau hoi vao trong co so du lieu'''
-
-    #lấy thông tin cần thiết từ form
-    if request.method=="POST":
-        content = request.POST.get('content')  #lấy nội dung câu hỏi
-        if (content):
-            li=[]                                   # biến lưu danh sách các câu trả lời
-            i = 1
-
-            # lấy ra các câu trả lời từ form
-            dap_an = "answer_" + str(i)
-            while (request.POST.get(dap_an)):
-                    i = i + 1
-                    li.append(request.POST.get(dap_an))
-                    dap_an = "answer_" + str(i)
-
-            # lấy ra đáp án đúng và các thông tin khác
-            dap_an_dung = request.POST.get('is_answer')
-            if (dap_an_dung):
-                les = request.POST.get('lession')
-                giai_thich = request.POST.get('giai_thich')
-
-                #tạo các bản ghi
-                q = question(content=content,lession=les) #tạo ra bản ghi question
-                q.id_user = request.user
-                q.lastTimeChanged=datetime.datetime.now()
-                q.save()                                    #lưu bản ghi
-                j = 0       #j là biến chạy
-                s = str(1)  #s là biến string để xác định đáp án đúng
-                while (j < i-1):
-                    if (dap_an_dung == s): # nếu là đáp án đúng thì thực hiện lệnh if
-                        ans = answer(content = li[j], is_answer=True)
-                        ans.id_question = q
-                        ans.save()
-                    else:                   # nếu là đáp án sai thì thực hiện lệnh else
-                        ans = answer(content = li[j], is_answer=False)
-                        ans.id_question = q
-                        ans.save()
-                    j = j + 1
-                    s=str(j+1)
-                return render_to_response('temp.html',{'cau_hoi':content,'dap_an':dap_an_dung,'cau_tra_loi':li})
-            else:
-                return HttpResponse("Câu hỏi không hợp lệ")
-        else:
-            return HttpResponse("Câu hỏi không hợp lệ")
-    return HttpResponse("Câu hỏi không hợp lệ")
 def lession(request, lession):
     """lấy câu hỏi phụ thuộc vào lession"""
     if request.user.is_authenticated():
@@ -363,25 +365,23 @@ def deleteQuestion(request,id_question):
 
 def feedback(request):
     #nếu đã đăng nhập thì cho phép gửi feed back
-    if request.user.is_authenticated():
+    if ( 'feedback_flag' not in request.session and request.user.is_authenticated()):
         c = {'page':"feedback.html",'login':'loggedin.html'}
+        request.session['feedback_flag']=True
         return render_to_response('base.html',c,context_instance=RequestContext(request))
-    else:
-        return HttpResponse("<html><font size=30>Bạn chưa đăng nhập</html>")
+    elif request.user.is_authenticated() and 'feedback_flag' in request.session:
+        '''ghi phan hoi vao co so du lieu'''
+        del request.session['feedback_flag']
+        if request.method == "POST":
+            content = request.POST.get("content")
+            if content:
+                fb = feedBack(id_user=request.user,feedback=content)
+                fb.save()
+                return HttpResponse("Cảm ơn bạn đã gửi phản hồi<br>Chúng tôi sẽ xem xét phản hồi của bạn trong thời gian sớm nhất")
+            else:
+                return HttpResponse("Nội dung phản hồi còn trống")
 
-def createFeedback(request):
-    '''ghi phan hoi vao co so du lieu'''
-    if request.method == "POST":
-        content = request.POST.get("content")
-        #print ("nguoi dung %s noi rang: %s" %(request.user.id, content))
-        if content:
-            fb = feedBack(id_user=request.user,feedback=content)
-            fb.save()
-        return HttpResponse("Gui phan hoi thanh cong")
-    else:    
-        return HttpResponse("Ban phai dien noi dung vao phan hoi")
-    
-    return HttpResponse("Gui phan hoi that bai")
+    return HttpResponse("Không thể gủi phản hồi")
 
 def  ranking(request):
     #láy ra tất cả mã của người dùng và kết quả của họ

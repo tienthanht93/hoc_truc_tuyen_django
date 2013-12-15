@@ -58,6 +58,7 @@ class UserProfile(models.Model):
 #bang luu noi dung feedback
 class feedBack(models.Model):
     id_user = models.ForeignKey(User)
+    #title = models.CharField(max_length=200, blank=False, verbose_name="Tiêu đề")
     feedback = models.CharField(max_length=2000,blank=False,verbose_name="Nội dung phản hồi")
     def __unicode__(self):
         return u'%s' %(self.feedback)

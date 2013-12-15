@@ -9,7 +9,7 @@
 		});
 
     </script>
-    <form action="/create-question" method="post" class="add-question"> {% csrf_token %}<br/>
+    <form action="/add" method="post" class="add-question"> {% csrf_token %}<br/>
     
         <h2>Nhập câu hỏi mới</h2>
         <textarea class="content" name="content" cols="50" rows="8" maxlength="2000" placeholder="Nội dung câu hỏi" title="Câu hỏi"></textarea>

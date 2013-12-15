@@ -32,7 +32,6 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^feedback','trac_nghiem.views.feedback'),
-    url(r'^create-feedback','trac_nghiem.views.createFeedback'),
     url(r'^ranking','trac_nghiem.views.ranking'),
 
     # Uncomment the next line to enable the admin:
