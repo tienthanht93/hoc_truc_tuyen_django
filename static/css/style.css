@@ -87,8 +87,8 @@ img.btn_close {
 
 
 /********************css for page*********************/
-.page{padding:5px 0 10px 0;float:left;width:100%;min-height: 600px;}
-.main{margin:20px auto;width:960px;min-height: 100px; background: #FFF;}
+.page{padding:5px 0 10px 0;float:left;width:100%;min-height: 600px; background: none}
+.main{margin:20px auto;width:960px;min-height: 100px; background: none;}
 .main_statistic{margin:20px auto;width:960px;min-height: 100px;}
 .left-menu{float: left; width: 200px; margin: 30px 0 0 10px;}
 .left-menu> a >li {padding: 8px 0 8px 10px;margin: 0 0 0 0;border-bottom: 1px solid #dcbdff;background: url(../image/icons/direct.png) 0px 0px no-repeat right top #faf4ff;}
@@ -110,10 +110,11 @@ input[type=radio]:checked {background: red;}
 .footer-bottom-center{width:100%;margin:0 auto;color:#EDEBEB; background:#036; height:50px; padding:5px 0 0 0;}
 .bottom-bar-menu{float:right;}
 .btn-group-warning{ width:70px; background: none; border:none;}
-.btn-group-warning:hover{ border: 1px solid #eea236; background-color: #ed9c28}
+.btn-group-warning:hover{background-color: #ed9c28}
 .btn-group-dannger{ width:70px; background: none; border:none;}
-.btn-group-dannger:hover{ border: 1px solid #ac2925; background-color: #d2322d}
-
+.btn-group-dannger:hover{background-color: #d2322d}
+.btn-cpanel{ width:150px; background: none; border: 1px solid;}
+.btn-cpanel:hover{background-color: #ed9c28}
 
 
 

@@ -32,12 +32,12 @@ class result(models.Model):
     id_user = models.ForeignKey(User)
     lession = models.SmallIntegerField(verbose_name="tên bài học", default=0)
     last_question = models.IntegerField(verbose_name="câu hỏi gần đây nhất",default=0)
-    scores = models.IntegerField(verbose_name="tổng điểm",default=0)
+    scores = models.IntegerField(verbose_name="tổng điểm", default=0)
     correct_answers = models.IntegerField(verbose_name="số câu trả lời đúng",default=0)
-    wrong_answers = models.IntegerField(verbose_name="số câu trả lời sai",default=0)
+    wrong_answers = models.IntegerField(verbose_name="số câu trả lời sai", default=0)
     total_answers = models.IntegerField(verbose_name="tổng số câu trả lời",default=0)
-    rate = models.CharField(verbose_name="xếp loại",default="kém",max_length=20)
-    last_time = models.DateTimeField(verbose_name="lần làm bài cuối",primary_key=False)
+    rate = models.CharField(verbose_name="xếp loại", default="kém", max_length=20)
+    last_time = models.DateTimeField(verbose_name="lần làm bài cuối", primary_key=False)
 
     def __unicode__(self):
         return self.last_time
@@ -46,13 +46,13 @@ class result(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     c = (
-        ('Nam','Nam'),
-        (('Nữ').decode('utf8'),('Nữ').decode('utf8')),
-        (('Khác').decode('utf8'),('Khác').decode('utf8'))
+        ('Nam', 'Nam'),
+        (('Nữ').decode('utf8'), ('Nữ').decode('utf8')),
+        (('Khác').decode('utf8'), ('Khác').decode('utf8'))
     )
-    sex = models.CharField(max_length=10,choices=c,default=('Khác').decode('utf8'))
+    sex = models.CharField(max_length=10, choices=c, default=('Khác').decode('utf8'))
     birthday = models.DateField()
-    name = models.CharField(max_length=100,default=None)
+    name = models.CharField(max_length=100, default=None)
     def __unicode__(self):
         return self.user.username
 #bang luu noi dung feedback
@@ -66,5 +66,5 @@ class feedBack(models.Model):
 #bang luu tong tanh tich cua tung thanh vien dua vao id cua tung nguoi
 class totalScore(models.Model):
     id_user = models.ForeignKey(User)
-    user_name = models.CharField(verbose_name="tên tài khoản",default="",max_length=200)
+    user_name = models.CharField(verbose_name="tên tài khoản", default="", max_length=200)
     total_score = models.IntegerField(verbose_name="tổng số điểm của người chơi",default=0)

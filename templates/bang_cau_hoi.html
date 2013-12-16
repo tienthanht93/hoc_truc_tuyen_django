@@ -36,8 +36,8 @@
             <td>{{ q.lession }}</td>
             <td style="word-wrap: break-word">{{ q.content|slice:":135" }}</td>
             <td>{{ q.lastTimeChanged }}</td>
-            <td><input type="button" class="btn-group-bt" value="Thay Đổi" id="thay_doi_{{ forloop.counter }}">
-                <input type="button" class="btn-group-bt" value="Xóa" id="xoa_{{ forloop.counter }}">
+            <td><input type="button" class="btn-group-warning" value="Thay Đổi" id="thay_doi_{{ forloop.counter }}">
+                <input type="button" class="btn-group-dannger" value="Xóa" id="xoa_{{ forloop.counter }}">
             </td>
         </tr>
         {% endfor %}

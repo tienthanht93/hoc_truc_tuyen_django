@@ -17,22 +17,17 @@ import datetime
 import random
 from django.contrib.auth.models import User
 from django.template import RequestContext
-
 # global variables
 current_id_question = -1
 current_lession = 1
 def home(request):
     if (request.user.is_authenticated()==True):
-        return render_to_response('base.html',{'page':"home.html",'right_main':'right_main_for_home_page.html','login':'loggedin.html','user':request.user},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'page':"home.html",'right_main':'right_main_for_home_page.html','login':'loggedin.html','user':request.user,'cpanel_flag':False},context_instance=RequestContext(request))
     else:
-        return render_to_response('base.html',{'page':"home.html",'right_main':'right_main_for_home_page.html','login':'login.html'},context_instance=RequestContext(request))
+        return render_to_response('base.html',{'page':"home.html",'right_main':'right_main_for_home_page.html','login':'login.html','cpanel_flag':False},context_instance=RequestContext(request))
 
 def add(request):
-    if request.user.is_authenticated() and 'add_question_flag' not in request.session:
-        c = {'page':"create_question.html",'login':'loggedin.html'}
-        request.session['add_question_flag'] = True
-        return render_to_response('base.html',c,context_instance=RequestContext(request))
-    elif request.user.is_authenticated() and 'add_question_flag' in request.session:
+    if request.user.is_authenticated() and 'add_question_flag' in request.session:
         '''ghi cau hoi vao trong co so du lieu'''
         del request.session['add_question_flag']
         #lấy thông tin cần thiết từ form
@@ -80,10 +75,15 @@ def add(request):
                 return HttpResponse("Câu hỏi không hợp lệ")
         return HttpResponse("Câu hỏi không hợp lệ")
 
+    elif request.user.is_authenticated() and 'add_question_flag' not in request.session:
+        c = {'page':"create_question.html",'login':'loggedin.html'}
+        request.session['add_question_flag'] = True
+        return render_to_response('base.html',c,context_instance=RequestContext(request))
+
     return HttpResponse("<html><font size=30>Bạn chưa đăng nhập</html>")
 
 def register(request):
-    return render_to_response('base.html',{'page':"register.html"})
+    return render_to_response('base.html', {'page': "register.html"})
 
 def auth_view(request):
     username= request.POST.get('email','')
@@ -152,7 +152,7 @@ def lession(request, lession):
                         global current_lession
                         current_id_question= cau_hoi.id_question
                         current_lession = cau_hoi.lession
-                        c = {'page':"home.html",'login':'loggedin.html','user':request.user,'cau_hoi':cau_hoi.content,'danh_sach_dap_an':tra_loi,'right_main':'question.html','current_url':request.get_full_path()}
+                        c = {'page':"home.html",'login':'loggedin.html','user':request.user,'cau_hoi':cau_hoi.content,'danh_sach_dap_an':tra_loi,'right_main':'question.html','current_url':request.get_full_path(),'cpanel_flag':False}
                         return render_to_response('base.html',c,RequestContext(request))
 
         else:
@@ -181,7 +181,7 @@ def reload_lesssion(request, lession):
                         global current_lession
                         current_id_question= cau_hoi.id_question
                         current_lession = cau_hoi.lession
-                        c = {'cau_hoi':cau_hoi.content,'danh_sach_dap_an':tra_loi,'current_url':request.get_full_path()}
+                        c = {'cau_hoi':cau_hoi.content,'danh_sach_dap_an':tra_loi,'current_url':request.get_full_path(),'cpanel_flag':False}
                         return render_to_response('reload_question.html',c,RequestContext(request))
 
         else:
@@ -199,7 +199,7 @@ def check_answer(request):
             obj = answer.objects.get(id_answer=id_answer)
             #kiểm tra đã trả lời câu hỏi này hay chưa?
 
-            if (answered.objects.filter(id_user=request.user,answered=obj.id_question.id_question)):
+            if (answered.objects.filter(id_user=request.user, answered=obj.id_question.id_question)):
                 return HttpResponse("answered")
             else:
                 #tạo cở sở dữ liệu các câu hỏi đã trả lời
@@ -259,7 +259,9 @@ def statistic(request):
         return render_to_response('statistic.html',{'result':r,'login':'loggedin.html','user':request.user})
     else:
         return HttpResponse("Bạn chưa đăng nhập")
-def changePassword(request):
+
+
+def change_password(request):
     """thay đổi mật khẩu cho người dùng"""
     edited = False
     if request.user.is_authenticated():
@@ -268,7 +270,7 @@ def changePassword(request):
             print u.id
             p1 = request.POST.get('password1')
             p2 = request.POST.get('password2')
-            if (p1 == p2):
+            if p1 == p2:
                 u.set_password(request.POST.get('password1'))
                 u.save()
                 auth.logout(request)
@@ -280,30 +282,37 @@ def changePassword(request):
             return render_to_response('paswordChange.html',RequestContext(request))
     else:
         return HttpResponse("Bạn chưa đăng nhập")
-def profile (request):
+
+
+def profile(request):
     if request.user.is_authenticated():
         p = UserProfile.objects.get(user=request.user)
-        u = request.user
-        return render_to_response('profile.html',{'profile':p,'login':'loggedin.html','user':request.user})
+        return render_to_response('profile.html', {'profile': p, 'login': 'loggedin.html', 'user': request.user})
     else:
         return HttpResponse("bạn chưa đăng nhập")
-def questionList(request):
+
+
+def question_list(request):
     if (request.user.is_authenticated() and request.method=="GET"):
         q = question.objects.filter(id_user=request.user).order_by('id_question')
-        return render_to_response("questionList.html",{'question':q,'login':'loggedin.html','user':request.user})
+        return render_to_response("questionList.html", {'question': q, 'login': 'loggedin.html', 'user': request.user})
     return HttpResponse("questionList's Function error")
-def editQuestion(request,id_question):
+
+
+def edit_question(request,id_question):
     if (request.user.is_authenticated()):
         global current_id_question
         current_id_question = int(id_question)
         q = question.objects.get(id_question=id_question)
         a = answer.objects.filter(id_question=q)
         return render_to_response("edit_question.html",{'question':q,'answer':a,'login':'loggedin.html','user':request.user},RequestContext(request))
-def saveEditedQuestion(request):
+
+
+def save_edited_question(request):
     if(request.user.is_authenticated() and request.method=="POST"):
         content = request.POST.get('content')  #lấy nội dung câu hỏi
         if (content):
-            li=[]                                   # biến lưu danh sách các câu trả lời
+            li = []                                   # biến lưu danh sách các câu trả lời
             i = 1
 
             # lấy ra các câu trả lời từ form
@@ -315,16 +324,16 @@ def saveEditedQuestion(request):
 
             # lấy ra đáp án đúng và các thông tin khác
             dap_an_dung = request.POST.get('is_answer')
-            if (dap_an_dung):
+            if dap_an_dung:
                 les = request.POST.get('lession')
                 giai_thich = request.POST.get('giai_thich')
 
                 #lấy bản ghi tương ứng và lưu các thay đổi trên bản ghi này.
-                id_question=int(current_id_question)
+                id_question = int(current_id_question)
                 q = question.objects.get(id_question=id_question) #lấy bản ghi question
-                q.content=content
-                q.lastTimeChanged=datetime.datetime.now()   #thay đổi thời gian
-                q.lession=les                               #thay đổi lession
+                q.content = content
+                q.lastTimeChanged = datetime.datetime.now()   #thay đổi thời gian
+                q.lession = les                               #thay đổi lession
                 q.save()                                    #lưu bản ghi question
                 #xóa các đáp án cũ.
                 a = answer.objects.filter(id_question=q)
@@ -332,24 +341,24 @@ def saveEditedQuestion(request):
                 j = 0       #j là biến chạy
                 s = str(1)  #s là biến string để xác định đáp án đúng
                 while (j < i-1):
-                    if (dap_an_dung == s): # nếu là đáp án đúng thì thực hiện lệnh if
-                        ans = answer(content = li[j], is_answer=True)
+                    if dap_an_dung == s:  # nếu là đáp án đúng thì thực hiện lệnh if
+                        ans = answer(content=li[j], is_answer=True)
                         ans.id_question = q
                         ans.save()
                     else:                   # nếu là đáp án sai thì thực hiện lệnh else
-                        ans = answer(content = li[j], is_answer=False)
+                        ans = answer(content=li[j], is_answer=False)
                         ans.id_question = q
                         ans.save()
                     j = j + 1
-                    s=str(j+1)
-                return render_to_response('temp.html',{'cau_hoi':content,'dap_an':dap_an_dung,'cau_tra_loi':li})
+                    s = str(j+1)
+                return render_to_response('temp.html', {'cau_hoi': content, 'dap_an': dap_an_dung, 'cau_tra_loi': li})
             else:
                 return HttpResponse("Câu hỏi không hợp lệ")
         else:
             return HttpResponse("Câu hỏi không hợp lệ")
     return HttpResponse("Câu hỏi không hợp lệ")
 @csrf_exempt
-def deleteQuestion(request,id_question):
+def delete_question(request, id_question):
     id_question = int(id_question)
     if (question.objects.filter(id_question=id_question)):
         q = question.objects.get(id_question=id_question)
@@ -359,7 +368,7 @@ def deleteQuestion(request,id_question):
                 a.delete()
             q.delete()
             q = question.objects.filter(id_user=request.user).order_by('id_question')
-            return render_to_response("bang_cau_hoi.html",{'question':q,'login':'loggedin.html','user':request.user})
+            return render_to_response("bang_cau_hoi.html", {'question': q, 'login': 'loggedin.html', 'user': request.user})
     else:
         return HttpResponse("Không thể xóa!<br>vui lòng thử lại sau.")
 
@@ -383,24 +392,22 @@ def feedback(request):
 
     return HttpResponse("Không thể gủi phản hồi")
 
-def  ranking(request):
+
+def ranking(request):
     #láy ra tất cả mã của người dùng và kết quả của họ
     users = User.objects.all()
     results = result.objects.all()
 
     for user in users:
-        print "id %s Ten: %s " %(user.id, user)
-    
-    for user in users:
         #print "id cua nguoi su dung: %s" %user.user_id
-        results = result.objects.filter(id_user = user.id)
+        results = result.objects.filter(id_user=user.id)
         #nếu như có tồn tại bài làm thì mới tính kết quả
-        if (results):
+        if results:
             #tinh tong so diem cua 1 nguoi danh duoc dua tren so cau hoi va lession ho vuot qua
             #diem= so cau tra loi dung trong 1 lession * lession (lession cang kho thi trong so cang cao)
             sum = 0
             for r in results:
-                sum = sum + r.scores*r.lession
+                sum = sum+r.scores*r.lession
             #kiem tra xem tên tài khoan da co trong bảng kết quả totalScore chưa
             name = user
             if totalScore.objects.filter(user_name=name):
@@ -409,12 +416,19 @@ def  ranking(request):
                 b.total_score = sum
                 b.save()
             #nếu chưa có thì tạo bản ghi của người đó trong totalScore
-            else: 
+            else:
 
                 b = totalScore(id_user=user,user_name=name,total_score=sum)
                 b.save()
-                
+
     #xếp hạng 10 người chơi có tổng số điểm cao nhất
     total_score = totalScore.objects.all().order_by('-total_score')[0:10]
 
-    return render_to_response('ranking.html',{'total_score': total_score, 'login':'loggedin.html','user':request.user,})
+    return render_to_response('ranking.html', {'total_score': total_score, 'login': 'loggedin.html', 'user': request.user})
+
+
+def cpanel(request):
+    if (request.user.is_authenticated() == True):
+        return render_to_response('base.html', {'page': "cpanel.html", 'login': 'loggedin.html', 'user': request.user, 'cpanel_flag': True}, context_instance=RequestContext(request))
+    else:
+        return HttpResponse("Bạn cần phải đăng nhập để xem nội dung")
