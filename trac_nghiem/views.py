@@ -17,6 +17,7 @@ import datetime
 import random
 from django.contrib.auth.models import User
 from django.template import RequestContext
+
 # global variables
 current_id_question = -1
 current_lession = 1
@@ -416,11 +417,11 @@ def ranking(request):
                 b.total_score = sum
                 b.save()
             #nếu chưa có thì tạo bản ghi của người đó trong totalScore
-            else:
+            else: 
 
                 b = totalScore(id_user=user,user_name=name,total_score=sum)
                 b.save()
-
+                
     #xếp hạng 10 người chơi có tổng số điểm cao nhất
     total_score = totalScore.objects.all().order_by('-total_score')[0:10]
 
